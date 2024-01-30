@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+   <meta http-equiv="Content-Type" content="<?php echo esc_attr(get_bloginfo('html_type')); ?>; charset=<?php echo esc_attr(get_bloginfo('charset')); ?>" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="<?php echo get_stylesheet_uri(); ?>">
+   <?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
+   <?php wp_body_open(); ?>
+   <header id="header">
+      <!-- Aquí puedes agregar el contenido específico del encabezado generado con Elementor -->
+      <?php
+      if (function_exists('elementor_theme_do_location') && elementor_theme_do_location('header')) {
+         // Renderiza el contenido generado por Elementor en el área del encabezado
+         elementor_theme_do_location('header');
+      }
+      ?>
+   </header>

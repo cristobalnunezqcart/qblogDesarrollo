@@ -1,0 +1,406 @@
+<?php
+/**
+ * qcart-theme functions and definitions
+ *
+ * @link https://developer.wordpress.org/themes/basics/theme-functions/
+ *
+ * @package qcart-theme
+ */
+
+if (!defined('_S_VERSION')) {
+    // Replace the version number of the theme on each release.
+    define('_S_VERSION', '1.0.0');
+}
+
+
+add_theme_support('menus');
+
+function set_elementor_page_template($template) {
+    // Si la página es una página individual y no es una página de administración, usa la plantilla de Elementor
+    if (is_page() && !is_admin() ) {
+       $template = get_template_directory() . '/template-elementor.php';
+    }
+    return $template;
+}
+add_filter('template_include', 'set_elementor_page_template');
+
+
+function create_home_page_and_set_elementor_content() {
+    // Verifica si la página de inicio ya existe
+    $home_page_exists = get_page_by_title('home-cq');
+
+    // Si no existe la página de inicio, la crea
+    if (!$home_page_exists) {
+        // Crea una nueva página
+        $home_page = array(
+            'post_type'    => 'page',
+            'post_title'   => 'home-cq',
+            'post_status'  => 'publish',
+        );
+
+        // Inserta la página en la base de datos
+        $home_page_id = wp_insert_post($home_page);
+
+        // Asigna la plantilla de Elementor "Ancho completo" a la página de inicio
+        update_post_meta($home_page_id, '_wp_page_template', 'elementor_header_footer');
+
+        // El contenido raw del postmeta _elementor_data que deseas establecer
+        $elementor_data_raw = '[{"id":"1a1138f7","elType":"container","settings":{"content_width":"full","shape_divider_top":"curve","shape_divider_top_width":{"unit":"%","size":100,"sizes":[]},"shape_divider_top_height":{"unit":"px","size":49,"sizes":[]},"__globals__":{"shape_divider_top_color":"globals\/colors?id=primary"},"width":{"unit":"%","size":100},"_flex_size":"none","_element_width":"initial","flex_wrap_mobile":"nowrap"},"elements":[{"id":"468bab7","elType":"widget","settings":{"shortcode":"[custom_mobile_menu]","_margin":{"unit":"%","top":"0","right":"0","bottom":"0","left":"0","isLinked":false},"_margin_tablet":{"unit":"%","top":"","right":"","bottom":"","left":"","isLinked":true},"_margin_mobile":{"unit":"%","top":"0","right":"0","bottom":"0","left":"0","isLinked":false},"_z_index_mobile":999,"hide_desktop":"hidden-desktop","hide_tablet":"hidden-tablet","_flex_align_self":"flex-end","_element_width_mobile":"inherit","_flex_align_self_mobile":"flex-end","_flex_order_mobile":"start","_flex_size_mobile":"grow","_offset_orientation_h":"end","_offset_x_end_mobile":{"unit":"%","size":4,"sizes":[]},"_offset_y_mobile":{"unit":"%","size":3,"sizes":[]},"_transform_translateX_effect_mobile":{"unit":"%","size":"","sizes":[]},"_transform_translateY_effect_mobile":{"unit":"%","size":-100,"sizes":[]}},"elements":[],"widgetType":"shortcode"},{"id":"292e0923","elType":"container","settings":{"shape_divider_top_color":"#C47676","shape_divider_top_width":{"unit":"%","size":134,"sizes":[]},"flex_direction":"column","boxed_width_mobile":{"unit":"%","size":100,"sizes":[]},"flex_direction_mobile":"row","flex_wrap_mobile":"nowrap","_flex_order_mobile":"start","flex_align_items_mobile":"flex-end","flex_align_items":"center","margin_mobile":{"unit":"%","top":"-25","right":"0","bottom":"0","left":"0","isLinked":false}},"elements":[{"id":"14ff561","elType":"container","settings":{"boxed_width":{"unit":"%","size":24,"sizes":[]},"boxed_width_tablet":{"unit":"%","size":28,"sizes":[]},"boxed_width_mobile":{"unit":"%","size":100,"sizes":[]},"min_height":{"unit":"px","size":0,"sizes":[]},"margin_tablet":{"unit":"%","top":"-2","right":"0","bottom":"0","left":"0","isLinked":false},"margin_mobile":{"unit":"%","top":"0","right":"0","bottom":"0","left":"0","isLinked":false},"content_width":"full","width":{"unit":"%","size":30,"sizes":[]},"width_tablet":{"unit":"%","size":31,"sizes":[]},"width_mobile":{"unit":"%","size":100,"sizes":[]}},"elements":[{"id":"147bf02e","elType":"widget","settings":{"shortcode":"[site_logo]","_margin":{"unit":"%","top":"-15","right":"0","bottom":"0","left":"0","isLinked":false},"_margin_tablet":{"unit":"%","top":"","right":"","bottom":"","left":"","isLinked":true},"_margin_mobile":{"unit":"%","top":"0","right":"0","bottom":"0","left":"0","isLinked":true}},"elements":[],"widgetType":"shortcode"}],"isInner":false},{"id":"316e7eb","elType":"container","settings":{"content_width":"full"},"elements":[{"id":"ea14cae","elType":"widget","settings":{"shortcode":"[custom_menu menu_class=\"custom-menu-container\"]","_margin":{"unit":"%","top":"0","right":"0","bottom":"0","left":"0","isLinked":false},"_margin_tablet":{"unit":"%","top":"","right":"","bottom":"","left":"","isLinked":true},"_margin_mobile":{"unit":"%","top":"","right":"","bottom":"","left":"","isLinked":true},"hide_mobile":"hidden-mobile"},"elements":[],"widgetType":"shortcode"}],"isInner":false}],"isInner":false},{"id":"44bef4e","elType":"container","settings":{"boxed_width":{"unit":"%","size":100,"sizes":[]},"boxed_width_tablet":{"unit":"%","size":"","sizes":[]},"boxed_width_mobile":{"unit":"%","size":"","sizes":[]},"flex_justify_content":"center","z_index_mobile":1},"elements":[{"id":"6eca878d","elType":"widget","settings":{"shortcode":"[custom_search_form]"},"elements":[],"widgetType":"shortcode"}],"isInner":false},{"id":"2fc05e2d","elType":"widget","settings":{"shortcode":"[custom_widget_shortcode]","_z_index_mobile":1},"elements":[],"widgetType":"shortcode"}],"isInner":false}]';
+        // Actualiza el postmeta _elementor_data con el contenido raw
+        update_post_meta($home_page_id, '_elementor_data', $elementor_data_raw);
+        update_post_meta($home_page_id, '_elementor_edit_mode', 'builder');
+        update_post_meta($home_page_id, '_elementor_template_type', 'wp-page');
+
+
+        // Establece el contenido del template como contenido de la página de inicio
+        wp_update_post(array(
+            'ID' => $home_page_id,
+            'post_content' => '[custom_mobile_menu][site_logo][custom_menu menu_class="custom-menu-container"][custom_search_form][custom_widget_shortcode]',
+        ));
+
+        // Establece la página de inicio recién creada como la página de inicio del sitio
+        update_option('page_on_front', $home_page_id);
+        update_option('show_on_front', 'page');
+    }
+}
+add_action('after_switch_theme', 'create_home_page_and_set_elementor_content');
+
+
+
+
+
+// Función para manejar el shortcode custom_widget_shortcode_handler
+function custom_widget_shortcode_handler($atts) {
+    $atts = shortcode_atts(array(
+        'per_page' => 9, // Cantidad de posts a mostrar inicialmente
+    ), $atts);
+
+    ob_start();
+
+    // Obtener los posts para mostrar en la grilla
+    $query = new WP_Query(array(
+        'post_type' => 'post',
+        'posts_per_page' => $atts['per_page'],
+    ));
+
+    if ($query->have_posts()) {
+        echo '<div class="custom-widget-grid">';
+
+        while ($query->have_posts()) {
+            $query->the_post();
+
+            // Obtener la URL de la imagen destacada
+            $featured_image_url = get_the_post_thumbnail_url();
+
+            // Mostrar la tarjeta con la imagen destacada y el título del post
+            echo '<div class="custom-widget-card">';
+            echo '<img src="' . $featured_image_url . '" alt="' . get_the_title() . '">';
+            //echo '<div class="custom-widget-title"><a class href="' . get_permalink() . '" target="_self">' . get_the_title() . '</a></div>';
+            echo '<div class="custom-widget-title"><a target="_blank">' . get_the_title() . '</a></div>';
+            echo '</div>';
+        }
+
+        echo '</div>';
+
+    }
+
+    wp_reset_postdata();
+
+    return ob_get_clean();
+}
+
+
+// Registrar el shortcode
+add_shortcode('custom_widget_shortcode', 'custom_widget_shortcode_handler');
+
+function custom_widget_load_more() {
+    $page = isset($_POST['page']) ? intval($_POST['page']) : 2;
+    $per_page = isset($_POST['posts_to_load']) ? intval($_POST['posts_to_load']) : 9;
+    $total = isset($_POST['total']) ? intval($_POST['total']) : 0;
+    $remainingPosts = $total - (($per_page) * ($page - 1));
+
+    $post_loads = ($page - 1) * $per_page; // Cantidad de posts ya cargados
+
+    $remaining_posts = $total - $post_loads; // Cantidad de posts restantes
+    $selected_category = isset($_POST['selectedCategory']) ? sanitize_text_field($_POST['selectedCategory']) : '';
+
+    $query_args = array(
+        'post_type' => 'post',
+        'posts_per_page' => $per_page,
+        'paged' => $page,
+        'orderby' => 'date',
+        'order' => 'DESC'
+    );
+
+    // Agregar búsqueda si se proporciona el término de búsqueda
+    if (isset($_POST['search_term']) && !empty($_POST['search_term'])) {
+        $query_args['s'] = sanitize_text_field($_POST['search_term']);
+    }
+
+
+    if ($selected_category) {
+        $query_args['tax_query'] = array(
+            array(
+                'taxonomy' => 'category',
+                'field' => 'slug',
+                'terms' => $selected_category,
+            )
+        );
+    }
+
+    $query = new WP_Query($query_args);
+
+
+    ob_start();
+
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+
+            // Obtener la URL de la imagen destacada
+            $featured_image_url = get_the_post_thumbnail_url();
+
+            // Mostrar la tarjeta con la imagen destacada y el título del post
+            echo '<div class="custom-widget-card">';
+            echo '<img src="' . $featured_image_url . '" alt="' . get_the_title() . '">';
+            //echo '<div class="custom-widget-title"><a class href="' . get_permalink() . '" target="_self">' . get_the_title() . '</a></div>';
+            echo '<div class="custom-widget-title"><a target="_blank">' . get_the_title() . '</a></div>';
+            echo '</div>';
+        }
+        echo '</div>';
+    }
+
+    $response = array(
+        'content' => ob_get_clean(),
+        'has_more' => $remaining_posts > $per_page
+    );
+
+    wp_reset_postdata();
+
+    wp_send_json_success($response);
+}
+
+
+
+
+
+add_action('wp_ajax_custom_widget_load_more', 'custom_widget_load_more');
+add_action('wp_ajax_nopriv_custom_widget_load_more', 'custom_widget_load_more');
+
+
+//busqueda shortcode
+
+function custom_widget_search_handler($atts) {
+    $atts = shortcode_atts(array(
+        'per_page' => 9, // Cantidad de posts a mostrar inicialmente
+    ), $atts);
+
+    // Obtener el término de búsqueda ingresado por el usuario
+    $search_term = isset($_POST['search_term']) ? sanitize_text_field($_POST['search_term']) : '';
+
+    // Obtener los posts para mostrar en la grilla
+    $query_args = array(
+        'post_type' => 'post',
+        'posts_per_page' => $atts['per_page'],
+        's' => $search_term, // Término de búsqueda
+        'orderby' => 'date',
+        'order' => 'DESC'
+    );
+
+    $query = new WP_Query($query_args);
+
+    ob_start();
+
+    if ($query->have_posts()) {
+        echo '<div class="custom-widget-grid">';
+
+        while ($query->have_posts()) {
+            $query->the_post();
+
+            // Obtener la URL de la imagen destacada
+            $featured_image_url = get_the_post_thumbnail_url();
+
+            // Mostrar la tarjeta con la imagen destacada y el título del post
+            echo '<div class="custom-widget-card">';
+            echo '<img src="' . $featured_image_url . '" alt="' . get_the_title() . '">';
+            //echo '<div class="custom-widget-title"><a class href="' . get_permalink() . '" target="_self">' . get_the_title() . '</a></div>';
+            echo '<div class="custom-widget-title"><a target="_blank">' . get_the_title() . '</a></div>';
+            echo '</div>';
+        }
+
+        echo '</div>';
+
+    }
+
+    wp_reset_postdata();
+
+    return ob_get_clean();
+}
+
+add_shortcode('custom_widget_search', 'custom_widget_search_handler');
+
+function custom_search_form_shortcode() {
+    ob_start();
+    ?>
+    <div class="custom-search-form-container">
+        <form id="search-form" role="search" method="post">
+            <input type="text" id="search-input" name="s" placeholder="Buscar..." />
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+
+add_shortcode('custom_search_form', 'custom_search_form_shortcode');
+
+
+function custom_site_logo_shortcode() {
+    // Obtener el ID del logo del sitio (normalmente, se usa el logo definido en el personalizador del tema)
+    $logo_id = get_theme_mod('custom_logo');
+
+    // Verificar si se ha definido un logo en el personalizador del tema
+    if ($logo_id) {
+        // Obtener la URL de la imagen del logo y otros datos (ancho y alto)
+        $logo_data = wp_get_attachment_image_src($logo_id, 'full');
+
+        // Verificar si se pudo obtener la URL de la imagen
+        if ($logo_data) {
+            $logo_url = $logo_data[0];
+            $logo_width = $logo_data[1];
+            $logo_height = $logo_data[2];
+
+            // Devolver el código HTML para mostrar la imagen centrada con la clase "site-logo"
+            return '<div class="site-logo" style="display: flex; justify-content: center;"><img src="' . esc_url($logo_url) . '" alt="Logo del sitio" width="' . esc_attr($logo_width) . '" height="' . esc_attr($logo_height) . '"></div>';
+        }
+    }
+
+    // Si no se ha definido un logo o no se pudo obtener la URL de la imagen, devolver un mensaje
+    return 'No se ha definido un logo para el sitio o la imagen no está disponible.';
+}
+add_shortcode('site_logo', 'custom_site_logo_shortcode');
+
+
+//menu
+function custom_menu_shortcode($atts) {
+    $categories = get_categories(array('taxonomy' => 'category', 'hide_empty' => false));
+    
+    ob_start();
+    echo '<nav class="custom-menu">';
+    echo '<ul class="custom-menu-list">';
+    echo '<li class="custom-menu-item">';
+    echo '<a class="custom-menu-link" href="#">Recetas</a>';
+    if ($categories) {
+        echo '<ul class="sub-menu">';
+        foreach ($categories as $category) {
+            echo '<li><a href="' . get_category_link($category->term_id) . '">' . $category->name . '</a></li>';
+        }
+        echo '</ul>';
+    }
+    echo '</li>';
+    // Agrega más menús principales aquí si es necesario
+    echo '</ul>';
+    echo '</nav>';
+    return ob_get_clean();
+}
+add_shortcode('custom_widget_menu', 'custom_menu_shortcode');
+
+
+//menu
+
+
+//menu v2-desktop
+function custom_menu_shortcodev2( $atts ) {
+    $atts = shortcode_atts( array(
+        'menu_class' => '',
+    ), $atts, 'custom_menu' );
+
+    // Obtener las categorías de los posts
+    $categories = get_categories();
+
+    // Buscar la categoría "Uncategorized" y obtener su ID
+    $uncategorized_id = 0;
+    foreach ( $categories as $category ) {
+        if ( $category->name === 'Uncategorized' ) {
+            $uncategorized_id = $category->term_id;
+            break;
+        }
+    }
+
+    // Generar el código HTML del menú, excluyendo la categoría "Uncategorized"
+    $output = '<nav class="' . esc_attr( $atts['menu_class'] ) . '">';
+    
+    // Agregar el enlace "Inicio"
+    $output .= '<a href="' . esc_url( home_url() ) . '">Inicio</a>';
+    
+    foreach ( $categories as $category ) {
+        if ( $category->term_id !== $uncategorized_id ) {
+            $output .= '<a href="' . esc_url( get_category_link( $category->term_id ) ) . '">' . esc_html( $category->name ) . '<div class="indicator"></div></a>';
+        }
+    }
+    $output .= '</nav>';
+
+    return $output;
+}
+add_shortcode( 'custom_menu', 'custom_menu_shortcodev2' );
+
+
+
+//menu v2-desktop
+
+
+//menu-mobile
+
+function mobile_menu_shortcode( $atts ) {
+    $atts = shortcode_atts( array(
+        'menu_class' => '',
+        'menu_items' => '',
+    ), $atts, 'mobile_menu' );
+
+    // Obtener las categorías de los posts
+    $categories = get_categories();
+
+
+    // Buscar la categoría "Uncategorized" y obtener su ID
+    $uncategorized_id = 0;
+    foreach ( $categories as $category ) {
+        if ( $category->name === 'Uncategorized' ) {
+            $uncategorized_id = $category->term_id;
+            break;
+        }
+    }
+
+    
+    // Convertir la lista de elementos del menú a un array de enlaces y títulos
+    $menu_items = explode( ',', $atts['menu_items'] );
+
+    // Generar el código HTML del menú móvil
+    $output = '<nav class="' . esc_attr( $atts['menu_class'] ) . '">';
+    $output .= '<div class="navbar">';
+    $output .= '<div class="container nav-container">';
+    $output .= '<input class="checkbox" type="checkbox" name="" id="" />';
+    $output .= '<div class="hamburger-lines">';
+    $output .= '<span class="line line1"></span>';
+    $output .= '<span class="line line2"></span>';
+    $output .= '<span class="line line3"></span>';
+    $output .= '</div>';
+    $output .= '<div class="menu-items">';
+
+    $output .= '<li><a href="' . esc_url( home_url() ) . '">Inicio</a></li>';
+    foreach ( $categories as $category ) {
+        if ( $category->term_id !== $uncategorized_id ) {
+        $output .= '<li><a href="' . esc_url( get_category_link( $category->term_id ) ) . '">' . esc_html( $category->name ) . '</a></li>';
+        }
+    }
+
+    $output .= '</div>';
+    $output .= '</div>';
+    $output .= '</div>';
+    $output .= '</nav>';
+
+    return $output;
+}
+add_shortcode( 'custom_mobile_menu', 'mobile_menu_shortcode' );
+
+
+//menu-mobile
