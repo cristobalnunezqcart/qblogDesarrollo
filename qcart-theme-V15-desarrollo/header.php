@@ -31,7 +31,8 @@
 	<script src="https://code.jquery.com/jquery-3.6.3.min.js" crossorigin="anonymous"></script>
 	<link href="<?php bloginfo( 'template_url' ); ?>/css/swiper.min.css" rel="stylesheet">
 	<script src="<?php bloginfo( 'template_url' ); ?>/js/swiper.min.js"></script>
-	<script src="<?php bloginfo( 'template_url' ); ?>/js/swiper-option.js"></script>
+	<script type="module" src="<?php bloginfo( 'template_url' ); ?>/js/swiper-option.js"></script>
+
 	<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 </head>
 

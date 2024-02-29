@@ -15,6 +15,8 @@ get_header();
 echo do_shortcode( '[qbanner]' );
 echo do_shortcode( '[qbanner_mobile]' );
 echo do_shortcode( '[custom_mobile_menu]' );
+
+global  $wp_query;
 ?>
 <div style="height: 2dvh; display: block;"></div>
 
@@ -118,11 +120,17 @@ echo do_shortcode( '[custom_mobile_menu]' );
   <a href="https://google.com">
     <img src="https://img.freepik.com/foto-gratis/retrato-abstracto-ojo-elegancia-mujeres-jovenes-generado-ai_188544-9712.jpg?size=626&ext=jpg&ga=GA1.1.1687694167.1703808000&semt=ais" alt="Descripción del Banner">
   </a>
+    <button class="boton-comprar-producto">Comprar Producto</button>
 </div>
 <br>
+
+
 <main id="primary" class="site-main"></main>
+
 
 
 <?php
 get_footer();
+
 ?>
+<button id="load-more-button">Cargar más artículos</button>
