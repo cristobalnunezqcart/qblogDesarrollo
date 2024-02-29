@@ -22,6 +22,8 @@
                 $thumbnail = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large');
                 ?>
                 <img src="<?php echo esc_url($thumbnail[0]); ?>" class="card-img-top" alt="<?php the_title_attribute(); ?>">
+                <i class="imagen-superpuesta fa fa-play-circle" style="font-size:36px;"></i>
+                
                 <div class="card-body">
                     <?php
                     if (is_singular()) :

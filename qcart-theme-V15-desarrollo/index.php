@@ -116,12 +116,15 @@ global  $wp_query;
 </div>
 
 <br>
+<!-- 
 <div class="banner-especial">
   <a href="https://google.com">
     <img src="https://img.freepik.com/foto-gratis/retrato-abstracto-ojo-elegancia-mujeres-jovenes-generado-ai_188544-9712.jpg?size=626&ext=jpg&ga=GA1.1.1687694167.1703808000&semt=ais" alt="Descripción del Banner">
   </a>
+    <img class="imagen-superpuesta" src="https://static.vecteezy.com/system/resources/previews/009/992/487/non_2x/video-camera-icon-sign-design-free-png.png" alt="Imagen Superpuesta">
     <button class="boton-comprar-producto">Comprar Producto</button>
 </div>
+-->
 <br>
 
 

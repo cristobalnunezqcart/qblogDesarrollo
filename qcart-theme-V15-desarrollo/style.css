@@ -1903,6 +1903,18 @@ h2 {
 	cursor: pointer;
   }
 
+  .imagen-superpuesta{
+	position: absolute;
+	transform: translate(-100%, 600%);
+	padding: 10px 20px;
+	background-color: black;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	width: 18em;
+	}
+
 /* Estilos del Modal */
 .modal-recetario {
   display: none;

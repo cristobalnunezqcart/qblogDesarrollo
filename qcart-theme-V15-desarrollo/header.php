@@ -24,7 +24,8 @@
 	<link rel="stylesheet" href="https://use.typekit.net/eap4nrj.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" crossorigin="anonymous">
-
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
 	<?php wp_head();
  	echo do_shortcode( '[custom_elementor_shape]' );
 	 ?>
