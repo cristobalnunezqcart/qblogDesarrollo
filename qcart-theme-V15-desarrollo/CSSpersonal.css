@@ -1,0 +1,36 @@
+
+
+.card-title{
+	height: 2.6rem;
+	font-size: 17px;
+ 	white-space: normal; 
+  text-overflow: unset;
+	line-clamp: 2;
+}
+
+.card{
+	display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-meta{
+	height: 4rem;
+}
+
+.col-md-7{
+	padding: 1em;
+}
+
+
+
+.qcart-button{
+	width:20rem;
+}
+
+@media only screen and (max-width: 767px{
+	.card-title {
+		height: 3rem;
+		font-size: 11px;
+		}
+	}
