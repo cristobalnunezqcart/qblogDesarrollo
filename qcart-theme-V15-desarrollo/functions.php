@@ -981,6 +981,8 @@ function detectar_arroba_y_enlazar_instagram($content) {
 // Aplica la función a la salida del contenido
 add_filter('the_content', 'detectar_arroba_y_enlazar_instagram');
 
+
+
 function load_more_posts()
 {
   $next_page = $_POST['current_page'] + 1;

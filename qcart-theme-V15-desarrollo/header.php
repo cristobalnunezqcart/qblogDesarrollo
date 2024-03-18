@@ -33,6 +33,10 @@
 	<link href="<?php bloginfo( 'template_url' ); ?>/css/swiper.min.css" rel="stylesheet">
 	<script src="<?php bloginfo( 'template_url' ); ?>/js/swiper.min.js"></script>
 	<script type="module" src="<?php bloginfo( 'template_url' ); ?>/js/swiper-option.js"></script>
+	<script src="<?php bloginfo( 'template_url' ); ?>/js/qcart-shopper.js"></script>
+	<script src="<?php bloginfo( 'template_url' ); ?>/js/contador.js"></script>
+	<script src="<?php bloginfo( 'template_url' ); ?>/js/holamundocarrito.js"></script>
+	
 
 	<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 </head>
@@ -52,11 +56,85 @@
 				</div>
 			</div>
 		<aside class="sidebar-first"><?php the_custom_logo(); ?></aside>
-		<aside class="sidebar-second">
-		
-		<?php 
+		<aside class="sidebar-second" style="width: 24rem;">
+
+		<a href="#" id="abrirIframe" style="display: inline-flex; align-items: center; text-decoration: none; color: #000; padding: 5px 10px; border: 1px solid #ccc; border-radius: 100px; border-color:var(--color-primary);">
+			<span style="margin-right: 10px; ">
+				<span style="margin-right: 10px;">Mi Carro</span>
+				<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+		</a>
+
+		<iframe id="iframeCarrito" style="display:none;"></iframe>
+
+		<script>
+			$(document).ready(function() {
+			$('#abrirIframe').on('click', function(e) {
+				e.preventDefault();
+				
+				var src = "https://smkts.qcart.app/cartanywhere.html?add=''";
+
+			//	let src = `https://smkts.qcart.app/cartanywhere.html?${query}`
+			//	src += `&cq_ref=${encodeURIComponent(location.href)}`;
+
+				const iframe = document.createElement("iframe");
+				iframe.className = "qcart-iframe";
+
+				iframe.style.cssText = `
+					position: fixed;
+					left: 0;
+					right: 0;
+					top: 0;
+					bottom: 0;
+					width: 100%;
+					height: 100%;
+					z-index: 2147483647;
+					border: none;
+					background-color: rgba(255,255,255,0.5);
+					backdrop-filter: blur(3px);
+					background-image: url(https://acegif.com/wp-content/uploads/loading-13.gif);
+					background-size: 40px;
+					background-repeat: no-repeat;
+					background-position: 50%;
+				`;
+
+				iframe.onload = () => {
+					iframe.style.background = "none";
+				}
+
+				iframe.src = src;
+				document.body.appendChild(iframe);
+
+				window.addEventListener('message', event => {
+					const action = event.data?.action;
+					if ("qcart-iframe-close" == action) {
+					document.querySelectorAll(".qcart-iframe").forEach(i => i.remove());
+					}
+					if ("qcart-iframe-href" == action) {
+					document.querySelectorAll(".qcart-iframe").forEach(i => i.remove());
+
+					// stackoverflow.com/questions/46286766/cannot-catch-window-open-exception-in-safari
+					let x;
+					try {
+						x = window.open(event.data?.href);
+					} catch (e) { }
+					if (!x) location.href = event.data?.href;
+
+					}
+					if ("qcart-parent-href" == action) {
+					return location.href;
+					}
+				});
+
+				//$('#iframeCarrito').attr('src', src);
+				//$('#iframeCarrito').show();
+			});
+			});
+		</script>
+
+
+		<?php
 		if(get_option('nuestros_productos') != ''){
-			echo '<a href="' . esc_url( get_option('nuestros_productos')) . '?utm_source=qblog" style="display: inline-flex; align-items: center; text-decoration: none; color: #000; padding: 5px 10px; border: 1px solid #ccc; border-radius: 100px; border-color:var(--color-primary);">
+			echo '<a href="' . esc_url( get_option('nuestros_productos')) . '?utm_source=qblog" style="display: inline-flex; align-items: center; text-decoration: none; color: #000; padding: 5px 10px; border: 1px solid #ccc; border-radius: 100px; border-color:var(--color-primary);margin-right: 3rem;">
 			<span style="margin-right: 10px; ">
 				<span style="margin-right: 10px;">Nuestros Productos</span>
 				<i class="bi bi-box-arrow-right"></i>

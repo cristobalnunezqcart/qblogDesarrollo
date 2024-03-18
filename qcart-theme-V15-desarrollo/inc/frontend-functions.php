@@ -306,10 +306,15 @@ function mobile_menu_shortcode( $atts ) {
     $output .= '<a href="#popup1" class="search-btn"><i class="fa fa-search"></i></a>';
 
 
+    
+    $output .= '<a href="#carritoqcart" id="abrirIframe""><i class="fa fa-shopping-cart"></i></a>';
+
     $output .= '<div id="popup1" class="overlay">
 	<div class="popup">
 		<a class="close-modal" href="#"><i class="fa fa-window-close"></i></a>
 		<div class="content-popup">';
+    
+    
 
     $output .= do_shortcode('[custom_search_form]' );    
 	$output .='		
